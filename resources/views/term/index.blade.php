@@ -52,6 +52,7 @@
                     <table class="table table-striped table-inverse ">
                         <thead class="thead-inverse">
                             <tr>
+                                <th>ID</th>
                                 <th>Term Name</th>
                                 <th>Start Date</th>
                                 <th>End Date</th>
@@ -61,7 +62,8 @@
                             <tbody>
                                 @foreach($terms as $term)
                                 <tr>
-                                    <td scope="row">{{$term->name}}</td>
+                                    <td scope="row">TRM{{$term->id}}</td>
+                                    <td>{{$term->name}}</td>
                                     <td>{{$term->start_date}}</td>
                                     <td>{{$term->end_date}}</td>
                                     <td>

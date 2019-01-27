@@ -28,5 +28,10 @@ Route::prefix("/admin")->group(function() {
     Route::get("/term/{id}/delete", "TermController@delete")->name("term.delete");
     // Courses
     Route::get("/course", "CourseController@index")->name("course.index");
+    Route::post("/course", "CourseController@store")->name("course.store");
+    Route::get("/course/{id}/edit", "CourseController@index")->name("course.edit");
+    Route::post("/course/{id}", "CourseController@update")->name("course.update");
+    Route::get("/course/{id}/delete", "CourseController@delete")->name("course.delete");
+    // Schedules
 
 });

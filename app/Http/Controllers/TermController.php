@@ -27,7 +27,7 @@ class TermController extends Controller
         // dd($request->input());
         $term = Term::create($request->input());
         session()->flash("success", "Term created.");
-        return back();
+        return redirect()->route("term.index");
     }
     public function update(Request $request)
     {
@@ -39,12 +39,14 @@ class TermController extends Controller
         // dd($request->input());
         Term::findOrFail($request->id)->update($request->input());
         session()->flash("success", "Term updated.");
-        return back();
+        return redirect()->route("term.index");
     }
     public function delete(Request $request)
     {
-        Term::findOrFail($request->id)->delete();
-        session()->flash("success", "Term deleted.");
-        return back();
+        if($request->delete == 1 && $request->id) {
+            Term::findOrFail($request->id)->delete();
+            session()->flash("success", "Term deleted.");
+            return redirect()->route("term.index");
+        }
     }
 }
