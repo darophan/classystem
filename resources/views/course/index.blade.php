@@ -42,7 +42,7 @@
                                     <td scope="row">CUS{{$course->id}}</td>
                                     <td>{{$course->name}}</td>
                                     <td>
-                                        <a href="{{route("course.edit", ['id'=> $course->id, 'edit' => 1])}}" class="text-primary" title="Edit" data-toggle="tooltip"><i class="fa fa-pencil"></i></a>
+                                        <a href="{{route("course.edit", ['id'=> $course->id, 'edit' => 1, 'page' => request()->page])}}" class="text-primary" title="Edit" data-toggle="tooltip"><i class="fa fa-pencil"></i></a>
                                         <a href="{{route("course.delete",['id'=> $course->id, 'delete' => 1])}}" onclick="return confirm('Do you really want to delete it?');" class="text-danger" title="Delete" data-toggle="tooltip"><i class="fa fa-trash"></i></a>
                                     </td>
                                 </tr>

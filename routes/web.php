@@ -33,5 +33,15 @@ Route::prefix("/admin")->group(function() {
     Route::post("/course/{id}", "CourseController@update")->name("course.update");
     Route::get("/course/{id}/delete", "CourseController@delete")->name("course.delete");
     // Schedules
-
+    Route::get("/schedule", "ScheduleController@index")->name("schedule.index");
+    Route::post("/schedule", "ScheduleController@store")->name("schedule.store");
+    Route::get("/schedule/{id}/edit", "ScheduleController@index")->name("schedule.edit");
+    Route::post("/schedule/{id}", "ScheduleController@update")->name("schedule.update");
+    Route::get("/schedule/{id}/delete", "ScheduleController@delete")->name("schedule.delete");
+    // Instructors
+    Route::get("/instructor", "InstructorController@index")->name("instructor.index");
+    Route::post("/instructor", "InstructorController@store")->name("instructor.store");
+    Route::get("/instructor/{id}/edit", "InstructorController@index")->name("instructor.edit");
+    Route::post("/instructor/{id}", "InstructorController@update")->name("instructor.update");
+    Route::get("/instructor/{id}/delete", "InstructorController@delete")->name("instructor.delete");
 });

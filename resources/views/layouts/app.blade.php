@@ -39,11 +39,11 @@
                         <li class="nav-item {{ Request::segment(2) === 'course' ? 'active' : '' }}">
                             <a href="{{route("course.index")}}" class="nav-link">Courses</a>
                         </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">Schedules</a>
+                        <li class="nav-item {{ Request::segment(2) === 'schedule' ? 'active' : '' }}">
+                            <a href="{{route("schedule.index")}}" class="nav-link">Schedules</a>
                         </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">Instructors</a>
+                        <li class="nav-item {{ Request::segment(2) === 'instructor' ? 'active' : '' }}">
+                            <a href="{{route("instructor.index")}}" class="nav-link">Instructors</a>
                         </li>
                     </ul>
 

@@ -67,7 +67,7 @@
                                     <td>{{$term->start_date}}</td>
                                     <td>{{$term->end_date}}</td>
                                     <td>
-                                        <a href="{{route("term.edit", ['id'=> $term->id, 'edit' => 1])}}" class="text-primary" title="Edit" data-toggle="tooltip"><i class="fa fa-pencil"></i></a>
+                                        <a href="{{route("term.edit", ['id'=> $term->id, 'edit' => 1, 'page' => request()->page])}}" class="text-primary" title="Edit" data-toggle="tooltip"><i class="fa fa-pencil"></i></a>
                                         <a href="{{route("term.delete",['id'=> $term->id, 'delete' => 1])}}" onclick="return confirm('Do you really want to delete it?');" class="text-danger" title="Delete" data-toggle="tooltip"><i class="fa fa-trash"></i></a>
                                     </td>
                                 </tr>
