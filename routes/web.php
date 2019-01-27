@@ -20,9 +20,13 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::prefix("/admin")->group(function() {
+    // Terms
     Route::get("/term", "TermController@index")->name("term.index");
     Route::post("/term", "TermController@store")->name("term.store");
     Route::get("/term/{id}/edit", "TermController@index")->name("term.edit");
     Route::post("/term/{id}", "TermController@update")->name("term.update");
     Route::get("/term/{id}/delete", "TermController@delete")->name("term.delete");
+    // Courses
+    Route::get("/course", "CourseController@index")->name("course.index");
+
 });

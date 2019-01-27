@@ -33,7 +33,18 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                        <li class="nav-item {{ Request::segment(2) === 'term' ? 'active' : '' }}">
+                            <a href="{{route("term.index")}}" class="nav-link">Terms</a>
+                        </li>
+                        <li class="nav-item {{ Request::segment(2) === 'course' ? 'active' : '' }}">
+                            <a href="{{route("course.index")}}" class="nav-link">Courses</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">Schedules</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">Instructors</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
