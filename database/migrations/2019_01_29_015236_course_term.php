@@ -14,7 +14,7 @@ class CourseTerm extends Migration
     public function up()
     {
         Schema::create('course_term', function (Blueprint $table) {
-            $table->primary(['course_id', 'schedule_id']);
+            $table->primary(['term_id', 'instructor_id', 'schedule_id']);
             $table->integer("term_id")->unsigned()->index();
             $table->foreign('term_id')->references('id')->on('terms')->onDelete('cascade');
             $table->integer("course_id")->unsigned()->index();

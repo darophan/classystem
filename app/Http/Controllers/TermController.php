@@ -13,7 +13,7 @@ class TermController extends Controller
         if($request->edit == 1 && $request->id) {
             $edit_term = Term::findOrFail($request->id);
         }
-        $terms = Term::orderBy('created_at', 'desc')->paginate(5);
+        $terms = Term::orderBy('created_at', 'desc')->with('courses')->paginate(5);
 
         return view("term.index", compact('terms', 'edit_term'));
     }

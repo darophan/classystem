@@ -19,7 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::prefix("/admin")->group(function() {
+Route::prefix("/admin")->middleware(['auth'])->group(function() {
     // Terms
     Route::get("/term", "TermController@index")->name("term.index");
     Route::post("/term", "TermController@store")->name("term.store");
@@ -44,4 +44,15 @@ Route::prefix("/admin")->group(function() {
     Route::get("/instructor/{id}/edit", "InstructorController@index")->name("instructor.edit");
     Route::post("/instructor/{id}", "InstructorController@update")->name("instructor.update");
     Route::get("/instructor/{id}/delete", "InstructorController@delete")->name("instructor.delete");
+    // Course_Term Assigning
+    Route::get("/assigning", "AssigningController@index")->name("assigning.index");
+    Route::post("/assigning/selectTerm", "AssigningController@selectTerm")->name("assigning.selectTerm");
+    Route::get("/assigning/{id}/term", "AssigningController@assigning")->name("assigning.assigning");
+    Route::post("/assigning", "AssigningController@assigningCourse")->name("assigning.assigningCourse");
+    Route::post("/assigning/update", "AssigningController@update")->name("assigning.update");
+    Route::post("/assigning/delete", "AssigningController@delete")->name("assigning.delete");
+
+    Route::get("/select2-autocomplete-ajax-course", "AssigningController@dataAjaxForCourse");
+    Route::get("/select2-autocomplete-ajax-schedule", "AssigningController@dataAjaxForSchedule");
+    Route::get("/select2-autocomplete-ajax-instructor", "AssigningController@dataAjaxForInstructor");
 });

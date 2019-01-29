@@ -45,6 +45,9 @@
                         <li class="nav-item {{ Request::segment(2) === 'instructor' ? 'active' : '' }}">
                             <a href="{{route("instructor.index")}}" class="nav-link">Instructors</a>
                         </li>
+                        <li class="nav-item {{ Request::segment(2) === 'assigning' ? 'active' : '' }}">
+                            <a href="{{route("assigning.index")}}" class="nav-link">Assigning</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -94,6 +97,21 @@
                                 <span class="sr-only">Close</span>
                             </button>
                             <strong>Success!</strong> {{session()->get("success")}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+            @if(session()->has("danger"))
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                <span class="sr-only">Close</span>
+                            </button>
+                            <strong>Oop!</strong> {{session()->get("danger")}}
                         </div>
                     </div>
                 </div>

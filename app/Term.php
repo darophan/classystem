@@ -11,4 +11,18 @@ class Term extends Model
         'start_date',
         'end_date'
     ];
+    public function courses()
+    {
+        return $this->belongsToMany("App\Course", "course_term")
+                    ->using("App\CourseTerm")
+                    ->withPivot([
+                        'schedule_id',
+                        'instructor_id'
+                    ]);;
+    }
+    public function courseTerm()
+    {
+        return $this->hasMany();
+    }
+
 }

@@ -10,4 +10,8 @@ class Schedule extends Model
         'day',
         'time'
     ];
+    public function instructors()
+    {
+        return $this->belongsToMany("App\Instructor", "course_term");
+    }
 }

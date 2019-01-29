@@ -63,7 +63,11 @@
                                 @foreach($terms as $term)
                                 <tr>
                                     <td scope="row">TRM{{$term->id}}</td>
-                                    <td>{{$term->name}}</td>
+                                    <td>
+                                        <a href="{{route("assigning.assigning",['id' => $term->id])}}">
+                                        {{$term->name}} [x{{$term->courses->count()}} course(s)]
+                                        </a>
+                                    </td>
                                     <td>{{$term->start_date}}</td>
                                     <td>{{$term->end_date}}</td>
                                     <td>
