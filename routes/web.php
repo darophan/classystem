@@ -51,8 +51,21 @@ Route::prefix("/admin")->middleware(['auth'])->group(function() {
     Route::post("/assigning", "AssigningController@assigningCourse")->name("assigning.assigningCourse");
     Route::post("/assigning/update", "AssigningController@update")->name("assigning.update");
     Route::post("/assigning/delete", "AssigningController@delete")->name("assigning.delete");
-
+    // Instructor Assigning
+    Route::get("/assigning/instructor", "AssigningInstructorController@index")->name("assigningInstructor.index");
+    Route::post("/assigning/instructor/selectTerm", "AssigningInstructorController@selectTerm")->name("assigningInstructor.selectTerm");
+    Route::get("/assigning/instructor/{id}/term", "AssigningInstructorController@assigning")->name("assigningInstructor.assigning");
+    Route::post("/assigning/instructor", "AssigningInstructorController@assigningCourse")->name("assigningInstructor.assigningCourse");
+    Route::post("/assigning/instructor/update", "AssigningInstructorController@update")->name("assigningInstructor.update");
+    Route::post("/assigning/instructor/delete", "AssigningInstructorController@delete")->name("assigningInstructor.delete");
+    // Dropdown search select2
     Route::get("/select2-autocomplete-ajax-course", "AssigningController@dataAjaxForCourse");
     Route::get("/select2-autocomplete-ajax-schedule", "AssigningController@dataAjaxForSchedule");
     Route::get("/select2-autocomplete-ajax-instructor", "AssigningController@dataAjaxForInstructor");
+    // Calendar
+    Route::get("/calendar", "CalendarController@term")->name("calendar.term");
+    Route::any("/calendar/term", "CalendarController@index")->name("calendar.index");
+    // Confirm course instructor
+    Route::post("/calendar/confirm", "CalendarController@confirm")->name("calendar.confirm");
+    Route::post("/calendar/unset", "CalendarController@unset")->name("calendar.unset");
 });

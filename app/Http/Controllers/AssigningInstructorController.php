@@ -9,7 +9,7 @@ use App\Instructor;
 use App\Schedule;
 use DB;
 
-class AssigningController extends Controller
+class AssigningInstructorController extends Controller
 {
     public function index(Request $request)
     {
@@ -19,39 +19,48 @@ class AssigningController extends Controller
     public function selectTerm(Request $request)
     {
         $term = Term::findOrFail($request->term_id);
-        return redirect()->route("assigning.assigning", ['id' => $term->id] );
+        return redirect()->route("calendar.index", ['term_id' => $term->id] );
     }
     public function assigning(Request $request)
     {
-        $term = Term::with('courses')->findOrFail($request->id);
-        $courses = $term->courses()->paginate(10);
-        return view("assigning.term", compact("term", "courses"));
+        $term = Term::with('instructors')->findOrFail($request->id);
+        $instructors = $term->instructors()->paginate(10);
+        return view("assigning.instructor", compact("term", "instructors"));
     }
     public function assigningCourse(Request $request)
     {
         $this->validate($request, [
             "term_id" => "required",
+            "instructor_id" => "required",
+            "schedule_id" => "required",
             "course_id" => "required",
-            "schedule_id" => "required"
+            "priority" => "required"
         ]);
         $term = Term::findOrFail($request->input("term_id"));
-        $term->courses()->attach($request->input("course_id"), ['schedule_id' => $request->input('schedule_id')]);
-        session()->flash("success", "Assigning course/class successfully!");
+        try {
+             $term->instructors()->attach($request->input("instructor_id"), ['schedule_id' => $request->input('schedule_id'),'course_id' => $request->input('course_id'), 'priority' => $request->input("priority")]);
+        } catch (\Illuminate\Database\QueryException $e) {
+            session()->flash("danger", "Something went wrong!");
+            return back();
+        }
+        session()->flash("success", "Assigning instructor successfully!");
         return back();
-
     }
     public function update(Request $request)
     {
         // dd($request->input());
         $this->validate($request, [
-            'course_id' => 'required',
+            'instructor_id' => 'required',
             'schedule_id' => 'required',
-
+            'course_id' => 'required',
+            'priority' => 'required'
         ]);
-       $course_term = DB::table("course_term")->where("id","=",$request->course_term_id)
+       $course_term = DB::table("instructor_term")->where("id","=",$request->instructor_term_id)
        ->update([
-           "course_id" => $request->course_id,
+           "instructor_id" => $request->instructor_id,
            "schedule_id" => $request->schedule_id,
+           "course_id" => $request->course_id,
+           'priority' => $request->priority,
            "updated_at" => \Carbon\Carbon::now(),  # \Datetime()
        ]);
         session()->flash("success", "Updated successfully!");
@@ -61,10 +70,10 @@ class AssigningController extends Controller
     {
         // dd($request->input());
         $this->validate($request, [
-            "course_term_id" => "required",
+            "instructor_term_id" => "required",
         ]);
         try {
-            DB::table("course_term")->where('id', $request->course_term_id)
+            DB::table("instructor_term")->where('id', $request->instructor_term_id)
                                     ->delete();
 
         } catch (\Illuminate\Database\QueryException $e) {

@@ -17,12 +17,28 @@ class Term extends Model
                     ->using("App\CourseTerm")
                     ->withPivot([
                         'schedule_id',
-                        'instructor_id'
-                    ]);;
+                        'is_taken',
+                        'id'
+                    ])
+                    ->withTimestamps();
     }
-    public function courseTerm()
+    public function instructors()
     {
-        return $this->hasMany();
+        return $this->belongsToMany("App\Instructor", "instructor_term")
+                    ->using("App\InstructorTerm")
+                    ->withPivot([
+                        'schedule_id',
+                        'id',
+                        'course_id',
+                        'is_taken',
+                        'priority'
+                    ])
+                    ->withTimestamps();
     }
+
+    // public function courseTerm()
+    // {
+    //     return $this->hasMany();
+    // }
 
 }

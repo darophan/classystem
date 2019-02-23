@@ -12,21 +12,20 @@
             <div class="card">
                 <div class="card-header">
                     Term: #TRM{{$term->id}} {{$term->name}}
-                    <a  class="btn btn-warning pull-right ml-1" href="{{route('assigningInstructor.assigning', ['term' => $term->id])}}" role="button">Instructor</a>
+                    <a  class="btn btn-warning pull-right ml-1" href="{{route('assigning.assigning',['term'=>$term->id])}}" role="button">Course/Class</a>
                     <a href="{{route("calendar.index", ['term_id' => $term->id])}}" class="btn btn-danger pull-right">Calendar</a>
                 </div>
 
                 <div class="card-body">
-                    <form onsubmit="return confirm('Do you really want to submit the form?');" action="{{route("assigning.assigningCourse")}}" method="post">
+                    <form onsubmit="return confirm('Do you really want to submit the form?');" action="{{route("assigningInstructor.assigningCourse")}}" method="post">
                         {{csrf_field()}}
                         <input type="hidden" value="{{$term->id}}" name="term_id">
                         <div class="form-group row">
-                          <label for="course_name" class="col-sm-2 col-form-label">Course/class<span class="text-danger">*</span></label>
+                          <label for="instructor" class="col-sm-2 col-form-label">Instructor<span class="text-danger">*</span></label>
                           <div class="col-sm-10">
-                              <select class="course form-control" name="course_id">
-                              </select>
-                              @if($errors->has("course_id"))
-                              <small class="text-danger">{{$errors->first("course_id")}}</small>
+                              <select class="instructor form-control" name="instructor_id"></select>
+                              @if($errors->has("instructor_id"))
+                              <small class="text-danger">{{$errors->first("instructor_id")}}</small>
                               @endif
                           </div>
                         </div>
@@ -39,45 +38,67 @@
                               @endif
                           </div>
                         </div>
-                        {{-- <div class="form-group row">
-                          <label for="instructor" class="col-sm-2 col-form-label">Instructor<span class="text-danger">*</span></label>
+                        <div class="form-group row">
+                          <label for="course_name" class="col-sm-2 col-form-label">Course/class<span class="text-danger">*</span></label>
                           <div class="col-sm-10">
-                              <select class="instructor form-control" name="instructor_id"></select>
-                              @if($errors->has("instructor_id"))
-                              <small class="text-danger">{{$errors->first("instructor_id")}}</small>
+                              <select class="course form-control" name="course_id">
+                              </select>
+                              @if($errors->has("course_id"))
+                              <small class="text-danger">{{$errors->first("course_id")}}</small>
                               @endif
                           </div>
-                        </div> --}}
+                        </div>
+                        <div class="form-group row">
+                          <label for="priority" class="col-sm-2 col-form-label">Priority<span class="text-danger">*</span></label>
+                          <div class="col-sm-10">
+                              <select class="form-control" name="priority">
+                                  <option value="0" disabled selected>Please select</option>
+                                  @for($i = 1; $i <= 3; $i++)
+                                  <option value="{{$i}}">{{$i}}</option>
+                                  @endfor
+                              </select>
+                              @if($errors->has("priority"))
+                              <small class="text-danger">{{$errors->first("priority")}}</small>
+                              @endif
+                          </div>
+                        </div>
+
                         <button type="submit" class="btn btn-primary">Create</button>
                     </form>
                     <br>
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Course/Class</th>
+                                <th>Intructor</th>
                                 <th>Schedule</th>
+                                <th>Course/Class</th>
+                                <th>Priority</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($courses as $course)
+                            @foreach($instructors as $instructor)
                                 <tr>
-                                    <td>{{$course->name}}</td>
-                                    <td>{{$course->pivot->schedule->day}} ({{$course->pivot->schedule->time}})</td>
+                                    <td>{{$instructor->name}}</td>
+                                    <td>{{$instructor->pivot->schedule->day}} ({{$instructor->pivot->schedule->time}})</td>
+                                    <td>{{$instructor->pivot->course->name}}</td>
+                                    <td>{{$instructor->pivot->priority}}</td>
                                     <td>
                                         <a href="#" class="text-primary" title="Edit" data-toggle="modal" data-target="#modelId" data-toggle="tooltip"
-                                        data-course_term_id="{{$course->pivot->id}}"
-                                        data-course="{{$course->name}}"
-                                        data-schedule="{{$course->pivot->schedule->day}} ({{$course->pivot->schedule->time}})"
+                                        data-instructor_term_id="{{$instructor->pivot->id}}"
+                                        data-instructor="{{$instructor->name}}"
+                                        data-course="{{$instructor->pivot->course->name}}"
+                                        data-priority="{{$instructor->pivot->priority}}"
+                                        data-schedule="{{$instructor->pivot->schedule->day}} ({{$instructor->pivot->schedule->time}})"
                                         ><i class="fa fa-pencil"></i></a>
                                         <a href="#" onclick="event.preventDefault();
                                         confirm('Do you really want to delete this?') ?
-                                            document.getElementById('form-{{$course->pivot->id}}').submit() : console.log(0);" class="text-danger" title="Delete" data-toggle="tooltip">
+                                            document.getElementById('form-{{$instructor->pivot->id}}').submit() : console.log(0);" class="text-danger" title="Delete" data-toggle="tooltip">
                                             <i class="fa fa-trash"></i>
                                         </a>
-                                        <form id="form-{{$course->pivot->id}}" action="{{ route('assigning.delete') }}" method="POST" style="display: none;">
+                                        <form id="form-{{$instructor->pivot->id}}" action="{{ route('assigningInstructor.delete') }}" method="POST" style="display: none;">
                                             {{csrf_field()}}
-                                            <input type="hidden" value="{{$course->pivot->id}}" name="course_term_id">
+                                            <input type="hidden" value="{{$instructor->pivot->id}}" name="instructor_term_id">
                                         </form>
                                     </td>
                                 </tr>
@@ -86,7 +107,7 @@
                     </table>
                 </div>
                 <div class="row justify-content-center align-items-center">
-                    {{ $courses->links() }}
+                    {{ $instructors->links() }}
                 </div>
             </div>
         </div>
@@ -102,17 +123,17 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
             </div>
-            <form onsubmit="return confirm('Do you really want to submit the form?');" action="{{route('assigning.update')}}" method="post">
+            <form onsubmit="return confirm('Do you really want to submit the form?');" action="{{route('assigningInstructor.update')}}" method="post">
                 <div class="modal-body">
                     {{csrf_field()}}
-                    <input type="hidden" value="" id="course_term_id" name="course_term_id">
+                    <input type="hidden" value="" id="instructor_term_id" name="instructor_term_id">
                     <div class="form-group ">
-                    <label for="course_name" id="course" class=" col-form-label">Course/class</label> <span class="text-danger">* to</span>
+                    <label for="instructor_id" id="instructor" class=" col-form-label">Instructor</label> <span class="text-danger">* to</span>
                     <div class="">
-                        <select class="course form-control" name="course_id">
+                        <select class="instructor form-control" name="instructor_id">
                         </select>
-                        @if($errors->has("course_id"))
-                        <small class="text-danger">{{$errors->first("course_id")}}</small>
+                        @if($errors->has("instructor_id"))
+                        <small class="text-danger">{{$errors->first("instructor_id")}}</small>
                         @endif
                     </div>
                     </div>
@@ -122,6 +143,29 @@
                         <select class="schedule form-control" name="schedule_id"></select>
                         @if($errors->has("schedule_id"))
                         <small class="text-danger">{{$errors->first("schedule_id")}}</small>
+                        @endif
+                    </div>
+                    </div>
+                    <div class="form-group ">
+                    <label for="course_id" id="course" class=" col-form-label">Course/Class </label><span class="text-danger">* to</span>
+                    <div class="">
+                        <select class="course form-control" name="course_id"></select>
+                        @if($errors->has("course_id"))
+                        <small class="text-danger">{{$errors->first("course_id")}}</small>
+                        @endif
+                    </div>
+                    </div>
+                    <div class="form-group ">
+                    <label for="priority" id="priority" class=" col-form-label">Priority </label><span class="text-danger">* to</span>
+                    <div class="">
+                        <select class="" name="priority">
+                            <option value="0" disabled selected>Please select</option>
+                            @for($i = 1; $i <= 3; $i++)
+                            <option value="{{$i}}">{{$i}}</option>
+                            @endfor
+                        </select>
+                        @if($errors->has("priority"))
+                        <small class="text-danger">{{$errors->first("priority")}}</small>
                         @endif
                     </div>
                     </div>
@@ -142,15 +186,19 @@
     $('[data-toggle="tooltip"]').tooltip({ trigger: "hover" });
     $('#modelId').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget); // Button that triggered the modal
-        var course_term_id = button.data('course_term_id'); // Extract info from data-* attributes
+        var instructor_term_id = button.data('instructor_term_id'); // Extract info from data-* attributes
+        var instructor = button.data('instructor');
         var course = button.data('course');
         var schedule = button.data('schedule');
+        var priority = button.data('priority');
 
         var modal = $(this);
-        modal.find("#course_term_id").val(course_term_id);
+        modal.find("#instructor_term_id").val(instructor_term_id);
 
-        modal.find('#course').text(course);
+        modal.find('#instructor').text(instructor);
         modal.find('#schedule').text(schedule);
+        modal.find('#course').text(course);
+        modal.find('#priority').text("Priority: " + priority);
 
     });
     $('.course').select2({

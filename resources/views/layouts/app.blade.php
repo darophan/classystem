@@ -33,20 +33,25 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="@if(Request::segment(2) === 'course' || Request::segment(2) == 'schedule' || Request::segment(2) == 'instructor') {{'active'}} @endif nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                Resources <span class="caret"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a href="{{route("course.index")}}" class="dropdown-item">Courses</a>
+                                <a href="{{route("schedule.index")}}" class="dropdown-item">Schedules</a>
+                                <a href="{{route("instructor.index")}}" class="dropdown-item">Instructors</a>
+                            </div>
+                        </li>
+
                         <li class="nav-item {{ Request::segment(2) === 'term' ? 'active' : '' }}">
                             <a href="{{route("term.index")}}" class="nav-link">Terms</a>
                         </li>
-                        <li class="nav-item {{ Request::segment(2) === 'course' ? 'active' : '' }}">
-                            <a href="{{route("course.index")}}" class="nav-link">Courses</a>
-                        </li>
-                        <li class="nav-item {{ Request::segment(2) === 'schedule' ? 'active' : '' }}">
-                            <a href="{{route("schedule.index")}}" class="nav-link">Schedules</a>
-                        </li>
-                        <li class="nav-item {{ Request::segment(2) === 'instructor' ? 'active' : '' }}">
-                            <a href="{{route("instructor.index")}}" class="nav-link">Instructors</a>
-                        </li>
                         <li class="nav-item {{ Request::segment(2) === 'assigning' ? 'active' : '' }}">
                             <a href="{{route("assigning.index")}}" class="nav-link">Assigning</a>
+                        </li>
+                        <li class="nav-item {{ Request::segment(2) === 'calendar' ? 'active' : '' }}">
+                            <a href="{{route('calendar.term')}}" class="nav-link">Calendar</a>
                         </li>
                     </ul>
 
